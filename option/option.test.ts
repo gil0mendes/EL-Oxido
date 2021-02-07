@@ -334,4 +334,25 @@ when("Option", ({ when, test }) => {
       assertTrue(none().orElse(nobody).isNone());
     });
   });
+
+  when("zip", ({ test }) => {
+    const x = some(1);
+    const y = some("hi");
+    const z = none<number>();
+
+    test("with Some given None return None", () => {
+      assertTrue(x.zip(z).isNone());
+    });
+
+    test("with Some given Some return Some with both values", () => {
+      const result = x.zip(y);
+
+      assertEquals(result.unwrap()[0], x.unwrap());
+      assertEquals(result.unwrap()[1], y.unwrap());
+    });
+
+    test("with None given Some return None", () => {
+      assertTrue(z.zip(x).isNone());
+    });
+  });
 });

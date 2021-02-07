@@ -57,6 +57,15 @@ export interface IOption<T> {
   orElse(f: () => Option<T>): Option<T>;
 
   /**
+   * Zips this with another Option.
+   * 
+   * If this is Some(s) and other is Some(o), this method returns Some([s, o]). Otherwise, None is returned.
+   * 
+   * @param other 
+   */
+  zip<U>(other: Option<U>): Option<[T, U]>;
+
+  /**
    * Moves the value out of the Option if it is Some.
    *
    * In general, because this function may panic, its use is discouraged. Instead, prefer to use pattern matching and
