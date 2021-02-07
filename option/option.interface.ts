@@ -37,7 +37,15 @@ export interface IOption<T> {
    * - Some(t) if predicate returns true (where t is the wrapped value), and
    * - None if predicate returns false.
    */
-  filter(fn: (t: T) => boolean): IOption<T>;
+  filter(fn: (t: T) => boolean): Option<T>;
+
+  /**
+   * Returns the option if it contains a value, otherwise returns optb.
+   * 
+   * Arguments passed to or are eagerly evaluated; if you are passing the result of a function call, it is recommended 
+   * to use or_else, which is lazily evaluated.
+   */
+  or(optb: Option<T>): Option<T>;
 
   /**
    * Moves the value out of the Option if it is Some.

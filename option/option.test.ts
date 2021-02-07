@@ -1,6 +1,5 @@
 import { assertEquals } from "../deps-test.ts";
 import { assertFalse, assertTrue, fail, when } from "../test.utils.ts";
-import { None } from "./option.interface.ts";
 import { none, option, some } from "./option.ts";
 
 when("Option", ({ when, test }) => {
@@ -272,7 +271,7 @@ when("Option", ({ when, test }) => {
     });
   });
 
-  when("filter", () => {
+  when("filter", ({ test }) => {
     const isEvent = (n: number) => n % 2 === 0;
 
     test("returns None if the option is None", () => {
@@ -285,6 +284,36 @@ when("Option", ({ when, test }) => {
 
     test("returns None if the predicate returns false", () => {
       assertTrue(some(3).filter(isEvent).isNone());
+    });
+  });
+
+  when("or", ({ test }) => {
+    test("Some given None returns the some", () => {
+      const x = some(2);
+      const y = none<number>();
+
+      assertEquals(x.or(y).unwrap(), 2);
+    });
+
+    test("None given Some returns the given Some", () => {
+      const x = none<number>();
+      const y = some(100);
+
+      assertEquals(x.or(y).unwrap(), 100);
+    });
+
+    test("Some given Some returns the original Some", () => {
+      const x = some(2);
+      const y = some(100);
+
+      assertEquals(x.or(y).unwrap(), 2);
+    });
+
+    test("None given Some returns the original Some", () => {
+      const x = some(2);
+      const y = some(100);
+
+      assertEquals(x.or(y).unwrap(), 2);
     });
   });
 });

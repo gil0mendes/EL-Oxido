@@ -1,6 +1,5 @@
 import { panic } from "../executor.ts";
 import {
-  IOption,
   IOptionPattern,
   None as INone,
   Option,
@@ -11,9 +10,13 @@ class Some<T> implements ISome<T> {
   public tag: "some" = "some";
 
   constructor(private readonly value: T) {}
-  filter(fn: (t: T) => boolean): IOption<T> {
+
+  or(_: Option<T>): Option<T> {
+    return this;
+  }
+  filter(fn: (t: T) => boolean): Option<T> {
     return fn(this.value as NonNullable<T>)
-      ? some<T>(this.value as NonNullable<T>)
+      ? some(this.value as NonNullable<T>)
       : none<T>();
   }
   andThen<U>(f: (val: NonNullable<T>) => Option<U>): Option<U> {
@@ -70,7 +73,11 @@ class None<T> implements INone<T> {
   public tag: "none" = "none";
 
   constructor() {}
-  filter(_: (t: T) => boolean): IOption<T> {
+
+  or(optb: Option<T>): Option<T> {
+    return optb;
+  }
+  filter(_: (t: T) => boolean): Option<T> {
     return none<T>();
   }
 
