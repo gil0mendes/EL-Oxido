@@ -32,6 +32,14 @@ export interface IOption<T> {
   andThen<U>(f: (val: NonNullable<T>) => Option<U>): Option<U>;
 
   /**
+   * Returns None if the option is None, otherwise calls predicate with the wrapped value and returns:
+   * 
+   * - Some(t) if predicate returns true (where t is the wrapped value), and
+   * - None if predicate returns false.
+   */
+  filter(fn: (t: T) => boolean): IOption<T>;
+
+  /**
    * Moves the value out of the Option if it is Some.
    *
    * In general, because this function may panic, its use is discouraged. Instead, prefer to use pattern matching and
@@ -83,22 +91,6 @@ export interface IOption<T> {
    * Return true if value is empty
    */
   isNone(): boolean;
-
-  // /**
-  //  * Apply a predicate which if met, continues the Option Chain,
-  //  * otherwise return an empty Option
-  //  */
-  // filter(fn: (t: T) => boolean): IOption<T>;
-
-  // /**
-  //  * Apply a function wrapper in Option
-  //  */
-  // apply<R>(fab: IOption<(t: T) => R>): IOption<R>;
-
-  // /**
-  //  * Returns true if the Option is a Some value containing the given value.
-  //  */
-  // contains(value: T): boolean;
 }
 
 export interface Some<T> extends IOption<T> {

@@ -271,4 +271,20 @@ when("Option", ({ when, test }) => {
       assertEquals(some(2).andThen(sq).andThen(sq).unwrap(), 16);
     });
   });
+
+  when("filter", () => {
+    const isEvent = (n: number) => n % 2 === 0;
+
+    test("returns None if the option is None", () => {
+      assertTrue(none<number>().filter(isEvent).isNone());
+    });
+
+    test("returns Some if the predicate returns true", () => {
+      assertTrue(some(2).filter(isEvent).isSome());
+    });
+
+    test("returns None if the predicate returns false", () => {
+      assertTrue(some(3).filter(isEvent).isNone());
+    });
+  });
 });
