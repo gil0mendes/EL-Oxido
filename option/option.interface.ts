@@ -44,8 +44,17 @@ export interface IOption<T> {
    * 
    * Arguments passed to or are eagerly evaluated; if you are passing the result of a function call, it is recommended 
    * to use or_else, which is lazily evaluated.
+   * 
+   * @param f optb
    */
   or(optb: Option<T>): Option<T>;
+
+  /**
+   * Returns the option if it contains a value, otherwise calls f and returns the result.
+   * 
+   * @param f 
+   */
+  orElse(f: () => Option<T>): Option<T>;
 
   /**
    * Moves the value out of the Option if it is Some.

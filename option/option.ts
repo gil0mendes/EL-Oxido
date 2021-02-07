@@ -10,6 +10,9 @@ class Some<T> implements ISome<T> {
   public tag: "some" = "some";
 
   constructor(private readonly value: T) {}
+  orElse(f: () => Option<T>): Option<T> {
+    return this;
+  }
 
   or(_: Option<T>): Option<T> {
     return this;
@@ -73,10 +76,14 @@ class None<T> implements INone<T> {
   public tag: "none" = "none";
 
   constructor() {}
+  orElse(f: () => Option<T>): Option<T> {
+    return f();
+  }
 
   or(optb: Option<T>): Option<T> {
     return optb;
   }
+
   filter(_: (t: T) => boolean): Option<T> {
     return none<T>();
   }

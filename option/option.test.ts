@@ -288,32 +288,50 @@ when("Option", ({ when, test }) => {
   });
 
   when("or", ({ test }) => {
-    test("Some given None returns the some", () => {
+    test("with Some given None returns the some", () => {
       const x = some(2);
       const y = none<number>();
 
       assertEquals(x.or(y).unwrap(), 2);
     });
 
-    test("None given Some returns the given Some", () => {
+    test("with None given Some returns the given Some", () => {
       const x = none<number>();
       const y = some(100);
 
       assertEquals(x.or(y).unwrap(), 100);
     });
 
-    test("Some given Some returns the original Some", () => {
+    test("with Some given Some returns the original Some", () => {
       const x = some(2);
       const y = some(100);
 
       assertEquals(x.or(y).unwrap(), 2);
     });
 
-    test("None given Some returns the original Some", () => {
+    test("with None given Some returns the original Some", () => {
       const x = some(2);
       const y = some(100);
 
       assertEquals(x.or(y).unwrap(), 2);
+    });
+  });
+
+  when("orElse", ({ test }) => {
+    const nobody = () => none<string>();
+    const vikings = () => some("vikings");
+
+    test("with Some returns the original Some", () => {
+      const testValue = "barbarians";
+      assertEquals(some(testValue).orElse(vikings).unwrap(), testValue);
+    });
+
+    test("with None given Some returns the given", () => {
+      assertEquals(none().orElse(vikings).unwrap(), "vikings");
+    });
+
+    test("with None given None returns None", () => {
+      assertTrue(none().orElse(nobody).isNone());
     });
   });
 });
