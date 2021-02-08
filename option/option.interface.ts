@@ -14,7 +14,7 @@ export interface IOptionPattern<TIn, TOut> {
 }
 
 /**
- * Abstract for handling possibility of undefined or null values.
+ * Interface that describes a structure to handling possibility of undefined or null values.
  */
 export interface IOption<T> {
   /**
@@ -135,6 +135,6 @@ export interface None<T> extends IOption<T> {
 }
 
 /**
- * This is a union type to allow custom match syntax using the typechecker.
+ * Type Option represents an optional value: every Option is either Some and contains a value, or None, and does not. 
  */
 export type Option<T> = Some<T> | None<T>;
