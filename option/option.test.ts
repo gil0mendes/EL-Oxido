@@ -355,4 +355,21 @@ when("Option", ({ when, test }) => {
       assertTrue(z.zip(x).isNone());
     });
   });
+
+  when("flatten", ({ test }) => {
+    test("with a nested Some returns the nested Some", () => {
+      const x = some(some(6));
+      console.log(">>>", x.flatten());
+      assertEquals(x.flatten().unwrap(), 6);
+    });
+
+    test("with a nested None returns None", () => {
+      const x = some(none<number>());
+      assertTrue(x.flatten().isNone());
+    });
+
+    test("with None returns None", () => {
+      assertTrue(none().flatten().isNone());
+    });
+  });
 });

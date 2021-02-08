@@ -40,6 +40,13 @@ export interface IOption<T> {
   filter(fn: (t: T) => boolean): Option<T>;
 
   /**
+   * Converts from Option<Option<T>> to Option<T>
+   * 
+   * Flattening once only removes one level of nesting. When there is no more nesting return the Option reference.
+   */
+  flatten(): Option<T>;
+
+  /**
    * Returns the option if it contains a value, otherwise returns optb.
    * 
    * Arguments passed to or are eagerly evaluated; if you are passing the result of a function call, it is recommended 

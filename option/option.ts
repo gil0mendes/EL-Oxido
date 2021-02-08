@@ -11,6 +11,14 @@ class Some<T> implements ISome<T> {
 
   constructor(private readonly value: T) {}
 
+  flatten(): Option<T> {
+    if (this.value instanceof Some || this.value instanceof None) {
+      return this.value;
+    }
+
+    return this;
+  }
+
   zip<U>(other: Option<U>): Option<[T, U]> {
     if (other.isNone()) {
       return none<[T, U]>();
@@ -84,6 +92,10 @@ class None<T> implements INone<T> {
   public tag: "none" = "none";
 
   constructor() {}
+
+  flatten(): Option<T> {
+    return this;
+  }
 
   zip<U>(_: Option<U>): Option<[T, U]> {
     return none<[T, U]>();
