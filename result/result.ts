@@ -10,6 +10,10 @@ class Ok<T, E> implements IOk<T, E> {
    */
   public constructor(private readonly value: T) {}
 
+  containsErr(f: E): boolean {
+    return false;
+  }
+
   contains(x: T): boolean {
     // TODO: implement complex equality logic
     return this.value === x;
@@ -33,6 +37,11 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  containsErr(f: E): boolean {
+    // TODO: implement complex equality logic
+    return this.value === f;
+  }
 
   contains(_: T): boolean {
     return false;

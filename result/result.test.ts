@@ -42,4 +42,21 @@ when("Result", ({ when }) => {
       assertFalse(x.contains(2));
     });
   });
+
+  when("containsErr", ({ test }) => {
+    test("with Ok return false", () => {
+      const x = ok<number, string>(2);
+      assertFalse(x.containsErr("Some error message"));
+    });
+
+    test("with Err given the same message returns true", () => {
+      const x = err("Some error message");
+      assertTrue(x.containsErr("Some error message"));
+    });
+
+    test("with Err given an different message returns false", () => {
+      const x = err("Some error message");
+      assertFalse(x.containsErr("Some other error message"));
+    });
+  });
 });

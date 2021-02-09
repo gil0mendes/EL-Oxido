@@ -16,6 +16,12 @@ interface IResult<T, E> {
    * Returns true if the result is an Ok value containing the given value.
    */
   contains(x: T): boolean;
+
+  /**
+   * 
+   * @param f 
+   */
+  containsErr(f: E): boolean;
 }
 
 export interface Ok<T, E> extends IResult<T, E> {
