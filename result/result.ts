@@ -9,6 +9,12 @@ class Ok<T, E> implements IOk<T, E> {
    * @param value 
    */
   public constructor(private readonly value: T) {}
+
+  contains(x: T): boolean {
+    // TODO: implement complex equality logic
+    return this.value === x;
+  }
+
   isErr(): boolean {
     return false;
   }
@@ -27,6 +33,11 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  contains(_: T): boolean {
+    return false;
+  }
+
   isErr(): boolean {
     return true;
   }
@@ -50,6 +61,6 @@ export function ok<T, E>(value: T): Result<T, E> {
  * 
  * @param value 
  */
-export function err<T, E>(value: T): Result<T, E> {
+export function err<T, E>(value: E): Result<T, E> {
   return new Err(value);
 }
