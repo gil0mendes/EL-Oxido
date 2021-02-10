@@ -1,3 +1,5 @@
+import { none, some } from "../option/option.ts";
+import { Option } from "../option/option.interface.ts";
 import { Err as IErr, Ok as IOk, Result } from "./result.interface.ts";
 
 class Ok<T, E> implements IOk<T, E> {
@@ -9,6 +11,14 @@ class Ok<T, E> implements IOk<T, E> {
    * @param value 
    */
   public constructor(private readonly value: T) {}
+
+  err(): Option<E> {
+    return none<E>();
+  }
+
+  ok(): Option<T> {
+    return some(this.value as NonNullable<T>);
+  }
 
   containsErr(f: E): boolean {
     return false;
@@ -37,6 +47,14 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  err(): Option<E> {
+    return some<E>(this.value as NonNullable<E>);
+  }
+
+  ok(): Option<T> {
+    return none<T>();
+  }
 
   containsErr(f: E): boolean {
     // TODO: implement complex equality logic

@@ -1,4 +1,4 @@
-import { assertFalse, assertTrue, when } from "../test.utils.ts";
+import { assertEquals, assertFalse, assertTrue, when } from "../test.utils.ts";
 import { err, ok } from "./result.ts";
 
 when("Result", ({ when }) => {
@@ -57,6 +57,30 @@ when("Result", ({ when }) => {
     test("with Err given an different message returns false", () => {
       const x = err("Some error message");
       assertFalse(x.containsErr("Some other error message"));
+    });
+  });
+
+  when("ok", ({ test }) => {
+    test("with Ok return a Some with the Ok value", () => {
+      const x = ok(2);
+      assertEquals(x.ok().unwrap(), 2);
+    });
+
+    test("with Err return a None", () => {
+      const x = err("nothing here");
+      assertTrue(x.ok().isNone());
+    });
+  });
+
+  when("err", ({ test }) => {
+    test("with Ok return a None", () => {
+      const x = ok(2);
+      assertTrue(x.err().isNone());
+    });
+
+    test("with Err return a Some with the error value", () => {
+      const x = err("nothing here");
+      assertEquals(x.err().unwrap(), "nothing here");
     });
   });
 });

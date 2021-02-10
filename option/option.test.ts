@@ -359,7 +359,6 @@ when("Option", ({ when, test }) => {
   when("flatten", ({ test }) => {
     test("with a nested Some returns the nested Some", () => {
       const x = some(some(6));
-      console.log(">>>", x.flatten());
       assertEquals(x.flatten().unwrap(), 6);
     });
 
