@@ -12,6 +12,22 @@ class Ok<T, E> implements IOk<T, E> {
    */
   public constructor(private readonly value: T) {}
 
+  mapErr<F>(op: (val: E) => F): Result<T, F> {
+    return ok<T, F>(this.value);
+  }
+
+  mapOrElse<U>(_: (val: E) => U, f: (val: T) => U): U {
+    return f(this.value);
+  }
+
+  mapOr<U>(_: U, f: (val: T) => U): U {
+    return f(this.value);
+  }
+
+  map<U>(f: (val: T) => U): Result<U, E> {
+    return ok<U, E>(f(this.value));
+  }
+
   err(): Option<E> {
     return none<E>();
   }
@@ -47,6 +63,22 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  mapErr<F>(op: (val: E) => F): Result<T, F> {
+    return err(op(this.value));
+  }
+
+  mapOrElse<U>(defaultF: (val: E) => U, _: (val: T) => U): U {
+    return defaultF(this.value);
+  }
+
+  mapOr<U>(defaultVal: U, _: (val: T) => U): U {
+    return defaultVal;
+  }
+
+  map<U>(f: (val: T) => U): Result<U, E> {
+    return err<U, E>(this.value);
+  }
 
   err(): Option<E> {
     return some<E>(this.value as NonNullable<E>);

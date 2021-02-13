@@ -83,4 +83,58 @@ when("Result", ({ when }) => {
       assertEquals(x.err().unwrap(), "nothing here");
     });
   });
+
+  when("map", ({ test }) => {
+    test("with Ok allows to change the value", () => {
+      const x = ok(2);
+
+      assertTrue(x.map((v: number) => v * 2).contains(4));
+    });
+
+    test("with Err does not change the error value", () => {
+      const x = err<number, number>(2);
+
+      assertTrue(x.map((v: number) => v + 2).containsErr(2));
+    });
+  });
+
+  when("mapOr", ({ test }) => {
+    test("with Ok execute the given functions", () => {
+      const x = ok("foo");
+      assertEquals(x.mapOr(42, (v) => v.length), 3);
+    });
+
+    test("with Err return the default", () => {
+      const x = err<string, string>("bar");
+      assertEquals(x.mapOr(42, (v) => v.length), 42);
+    });
+  });
+
+  when("mapOrElse", ({ test }) => {
+    const k = 21;
+
+    test("with Ok execute second functions", () => {
+      const x = ok<string, string>("foo");
+      assertEquals(x.mapOrElse((e) => k * 2, (v) => v.length), 3);
+    });
+
+    test("with Err execute first functions", () => {
+      const x = err<string, string>("foo");
+      assertEquals(x.mapOrElse((e) => k * 2, (v) => v.length), 42);
+    });
+  });
+
+  when("mapErr", ({ test }) => {
+    const stringify = (x: number) => `error code: ${x}`;
+
+    test("with Ok do nothing", () => {
+      const x = ok<number, number>(2);
+      assertTrue(x.mapErr(stringify).contains(2));
+    });
+
+    test("with Err execute function", () => {
+      const x = err<number, number>(13);
+      assertTrue(x.mapErr(stringify).containsErr("error code: 13"));
+    });
+  });
 });
