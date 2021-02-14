@@ -1,6 +1,7 @@
 import { none, some } from "../option/option.ts";
 import { Option } from "../option/option.interface.ts";
 import { Err as IErr, Ok as IOk, Result } from "./result.interface.ts";
+import { panic } from "../executor.ts";
 
 class Ok<T, E> implements IOk<T, E> {
   public readonly tag: "ok" = "ok";
@@ -11,6 +12,22 @@ class Ok<T, E> implements IOk<T, E> {
    * @param value 
    */
   public constructor(private readonly value: T) {}
+
+  unwrapErr(): E {
+    panic(`panics with \`${this.value}\``);
+  }
+
+  expectErr(msg: string): E {
+    panic(`panics with \`${msg}: ${this.value}\``);
+  }
+
+  unwrap(): T {
+    return this.value;
+  }
+
+  expect(_: string): T {
+    return this.value;
+  }
 
   unwrapOr(_: T): T {
     return this.value;
@@ -87,6 +104,22 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  unwrapErr(): E {
+    return this.value;
+  }
+
+  expectErr(_: string): E {
+    return this.value;
+  }
+
+  unwrap(): T {
+    panic(`panics with \`${this.value}\``);
+  }
+
+  expect(msg: string): T {
+    panic(`panics with \`${msg}: ${this.value}\``);
+  }
 
   unwrapOr(defaultVal: T): T {
     return defaultVal;

@@ -131,6 +131,41 @@ interface IResult<T, E> {
    * @param op 
    */
   unwrapOrElse(op: (val: E) => T): T;
+
+  /**
+   * Returns the contained Ok value, consuming the self value.
+   * 
+   * Panics if the value is an Err, with a panic message including the passed message, and the content of the Err.
+   * 
+   * @param msg 
+   */
+  expect(msg: string): T;
+
+  /**
+   * Returns the contained Ok value, consuming the self value.
+   * 
+   * Because this function may panic, its use is generally discouraged. Instead, prefer to use pattern matching and 
+   * handle the Err case explicitly, or call unwrapOr or unwrapOrElse.
+   * 
+   * Panics if the value is an Err, with a panic message provided by the Err's value.
+   */
+  unwrap(): T;
+
+  /**
+   * Returns the contained Err value, consuming the self value.
+   * 
+   * Panics if the value is an Ok, with a panic message including the passed message, and the content of the Ok.
+   * 
+   * @param msg 
+   */
+  expectErr(msg: string): E;
+
+  /**
+   * Returns the contained Err value, consuming the self value.
+   * 
+   * Panics if the value is an Ok, with a custom panic message provided by the Ok's value.
+   */
+  unwrapErr(): E;
 }
 
 export interface Ok<T, E> extends IResult<T, E> {

@@ -1,4 +1,10 @@
-import { assertEquals, assertFalse, assertTrue, when } from "../test.utils.ts";
+import {
+  assertEquals,
+  assertFalse,
+  assertTrue,
+  fail,
+  when,
+} from "../test.utils.ts";
 import { err, ok } from "./result.ts";
 
 when("Result", ({ when, test }) => {
@@ -242,5 +248,80 @@ when("Result", ({ when, test }) => {
       const x = err<number, string>("foo");
       assertEquals(x.unwrapOrElse(count), 3);
     });
+  });
+
+  when("expect", ({ test }) => {
+    test("with Ok returns the contained value", () => {
+      const x = ok(40);
+      assertEquals(x.expect("should have an value"), 40);
+    });
+
+    test("with Err panics with the message", () => {
+      const x = err("emergency failure");
+
+      try {
+        x.expect("Testing expect");
+        fail("this should fail");
+      } catch (e) {
+        assertEquals(
+          e.message,
+          "panics with `Testing expect: emergency failure`",
+        );
+      }
+    });
+  });
+
+  when("unwrap", ({ test }) => {
+    test("with Ok returns the contained value", () => {
+      const x = ok(2);
+      assertEquals(x.unwrap(), 2);
+    });
+
+    test("with Err panics with the contained error", () => {
+      const x = err("emergency failure");
+
+      try {
+        x.unwrap();
+        fail("this must fail");
+      } catch (e) {
+        assertEquals(e.message, "panics with `emergency failure`");
+      }
+    });
+  });
+
+  when("expectErr", ({ test }) => {
+    test("with Ok panics with the given message", () => {
+      const x = ok(10);
+
+      try {
+        x.expectErr("Testing expect_err");
+        fail("this must fail");
+      } catch (e) {
+        assertEquals(e.message, "panics with `Testing expect_err: 10`");
+      }
+    });
+
+    test("with Err returns the contained error", () => {
+      const x = err("emergency failure");
+      assertEquals(x.expectErr("Testing expect_err"), "emergency failure");
+    });
+  });
+
+  when("unwrapErr", ({ test }) => {
+    test("with Ok panics with the contained error", () => {
+      const x = ok(2);
+
+      try {
+        x.unwrapErr();
+        fail("this must fail");
+      } catch (e) {
+        assertEquals(e.message, "panics with `2`");
+      }
+    });
+  });
+
+  test("with Err returns the contained value", () => {
+    const x = err("emergency failure");
+    assertEquals(x.unwrapErr(), "emergency failure");
   });
 });
