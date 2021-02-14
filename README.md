@@ -7,14 +7,14 @@ Base Monads for [Deno](https://deno.land).
 ## Usage
 
 ```typescript
-import { Option } from "https://deno.land/x/el-monads@{VERSION}/mod.ts";
+import { Option } from "https://deno.land/x/oxido@{VERSION}/mod.ts";
 ```
 
 ## Test
 
 ```bash
 # unit tests
-deno ./test.ts
+deno test
 ```
 
 ## Format code
