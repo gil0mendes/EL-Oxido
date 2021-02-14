@@ -114,6 +114,23 @@ interface IResult<T, E> {
    * @param op 
    */
   orElse<F>(op: (val: E) => Result<T, F>): Result<T, F>;
+
+  /**
+   * Returns the contained Ok value or a provided default.
+   * 
+   * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is 
+   * recommended to use unwrapOrElse, which is lazily evaluated.
+   * 
+   * @param defaultVal 
+   */
+  unwrapOr(defaultVal: T): T;
+
+  /**
+   * Returns the contained Ok value or computes it from a closure.
+   * 
+   * @param op 
+   */
+  unwrapOrElse(op: (val: E) => T): T;
 }
 
 export interface Ok<T, E> extends IResult<T, E> {

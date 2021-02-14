@@ -217,4 +217,30 @@ when("Result", ({ when, test }) => {
       err<number, number>(3).orElse(error).orElse(error).containsErr(3),
     );
   });
+
+  when("unwrapOr", ({ test }) => {
+    test("with Ok returns the value", () => {
+      const x = ok(9);
+      assertEquals(x.unwrapOr(2), 9);
+    });
+
+    test("with Err returns the given value", () => {
+      const x = err(9);
+      assertEquals(x.unwrapOr(2), 2);
+    });
+  });
+
+  when("unwrapElse", ({ test }) => {
+    const count = (x: string) => x.length;
+
+    test("with Ok returns the value", () => {
+      const x = ok<number, string>(2);
+      assertEquals(x.unwrapOrElse(count), 2);
+    });
+
+    test("with Err returns the given value", () => {
+      const x = err<number, string>("foo");
+      assertEquals(x.unwrapOrElse(count), 3);
+    });
+  });
 });

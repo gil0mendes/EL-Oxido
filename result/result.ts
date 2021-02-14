@@ -12,6 +12,14 @@ class Ok<T, E> implements IOk<T, E> {
    */
   public constructor(private readonly value: T) {}
 
+  unwrapOr(_: T): T {
+    return this.value;
+  }
+
+  unwrapOrElse(_: (val: E) => T): T {
+    return this.value;
+  }
+
   or<F>(_: Result<T, F>): Result<T, F> {
     return ok(this.value);
   }
@@ -79,6 +87,14 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  unwrapOr(defaultVal: T): T {
+    return defaultVal;
+  }
+
+  unwrapOrElse(op: (val: E) => T): T {
+    return op(this.value);
+  }
 
   or<F>(res: Result<T, F>): Result<T, F> {
     return res;
