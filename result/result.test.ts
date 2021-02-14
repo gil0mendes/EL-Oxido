@@ -176,4 +176,45 @@ when("Result", ({ when, test }) => {
     assertTrue(ok(2).andThen(error).andThen(sq).containsErr(2));
     assertTrue(err<number, number>(3).andThen(sq).andThen(sq).containsErr(3));
   });
+
+  when("or", ({ test }) => {
+    test("with Ok given Err returns Ok", () => {
+      const x = ok<number, string>(2);
+      const y = err<number, string>("late error");
+      assertTrue(x.or(y).contains(2));
+    });
+
+    test("with Err given Ok return Ok", () => {
+      const x = err<string, string>("early error");
+      const y = ok<string, string>("foo");
+
+      assertTrue(x.or(y).contains("foo"));
+    });
+
+    test("with Err given Err return second Err", () => {
+      const x = err("not a 2");
+      const y = err<string, string>("late error");
+
+      assertTrue(x.or(y).containsErr("late error"));
+    });
+
+    test("with Ok given Ok return first Ok", () => {
+      const x = ok<number, string>(2);
+      const y = ok<number, string>(100);
+
+      assertTrue(x.or(y).contains(2));
+    });
+  });
+
+  test("orElse", () => {
+    const sq = (x: number) => ok<number, number>(x * x);
+    const error = (x: number) => err<number, number>(x);
+
+    assertTrue(ok<number, number>(2).orElse(sq).orElse(sq).contains(2));
+    assertTrue(ok<number, number>(2).orElse(error).orElse(sq).contains(2));
+    assertTrue(err<number, number>(3).orElse(sq).orElse(error).contains(9));
+    assertTrue(
+      err<number, number>(3).orElse(error).orElse(error).containsErr(3),
+    );
+  });
 });

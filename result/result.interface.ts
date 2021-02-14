@@ -95,6 +95,25 @@ interface IResult<T, E> {
    * @param op 
    */
   andThen<U>(op: (val: T) => Result<U, E>): Result<U, E>;
+
+  /**
+   * Returns res if the result is Err, otherwise returns the Ok value of self.
+   * 
+   * Arguments passed to or are eagerly evaluated; if you are passing the result of a function call, it is recommended 
+   * to use orElse, which is lazily evaluated.
+   * 
+   * @param res 
+   */
+  or<F>(res: Result<T, F>): Result<T, F>;
+
+  /**
+   * Calls op if the result is Err, otherwise returns the Ok value of self.
+   * 
+   * This function can be used for control flow based on result values.
+   * 
+   * @param op 
+   */
+  orElse<F>(op: (val: E) => Result<T, F>): Result<T, F>;
 }
 
 export interface Ok<T, E> extends IResult<T, E> {

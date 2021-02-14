@@ -12,6 +12,14 @@ class Ok<T, E> implements IOk<T, E> {
    */
   public constructor(private readonly value: T) {}
 
+  or<F>(_: Result<T, F>): Result<T, F> {
+    return ok(this.value);
+  }
+
+  orElse<F>(_: (val: E) => Result<T, F>): Result<T, F> {
+    return ok(this.value);
+  }
+
   and<U>(res: Result<U, E>): Result<U, E> {
     return res;
   }
@@ -71,6 +79,14 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  or<F>(res: Result<T, F>): Result<T, F> {
+    return res;
+  }
+
+  orElse<F>(op: (val: E) => Result<T, F>): Result<T, F> {
+    return op(this.value);
+  }
 
   and<U>(_: Result<U, E>): Result<U, E> {
     return err(this.value);
