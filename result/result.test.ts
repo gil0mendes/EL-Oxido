@@ -1,7 +1,7 @@
 import { assertEquals, assertFalse, assertTrue, when } from "../test.utils.ts";
 import { err, ok } from "./result.ts";
 
-when("Result", ({ when }) => {
+when("Result", ({ when, test }) => {
   when("isOk", ({ test }) => {
     test("with an Ok returns true", () => {
       const x = ok<number, string>(-1);
@@ -136,5 +136,44 @@ when("Result", ({ when }) => {
       const x = err<number, number>(13);
       assertTrue(x.mapErr(stringify).containsErr("error code: 13"));
     });
+  });
+
+  when("and", ({ test }) => {
+    test("with Ok given Err returns Err", () => {
+      const x = ok(2);
+      const y = err("late error");
+      assertTrue(x.and(y).containsErr("late error"));
+    });
+
+    test("with Err given Ok return Err", () => {
+      const x = err<string, string>("early error");
+      const y = ok<string, string>("foo");
+
+      assertTrue(x.and(y).containsErr("early error"));
+    });
+
+    test("with Err given Err return first Err", () => {
+      const x = err("not a 2");
+      const y = ok<string, string>("late error");
+
+      assertTrue(x.and(y).containsErr("not a 2"));
+    });
+
+    test("with Ok given Ok return second Ok", () => {
+      const x = ok(2);
+      const y = ok("other value");
+
+      assertTrue(x.and(y).contains("other value"));
+    });
+  });
+
+  test("andThen", () => {
+    const sq = (x: number) => ok<number, number>(x * x);
+    const error = (x: number) => err<number, number>(x);
+
+    assertTrue(ok(2).andThen(sq).andThen(sq).contains(16));
+    assertTrue(ok(2).andThen(sq).andThen(error).containsErr(4));
+    assertTrue(ok(2).andThen(error).andThen(sq).containsErr(2));
+    assertTrue(err<number, number>(3).andThen(sq).andThen(sq).containsErr(3));
   });
 });

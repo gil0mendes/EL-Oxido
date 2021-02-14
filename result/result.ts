@@ -12,6 +12,14 @@ class Ok<T, E> implements IOk<T, E> {
    */
   public constructor(private readonly value: T) {}
 
+  and<U>(res: Result<U, E>): Result<U, E> {
+    return res;
+  }
+
+  andThen<U>(op: (val: T) => Result<U, E>): Result<U, E> {
+    return op(this.value);
+  }
+
   mapErr<F>(op: (val: E) => F): Result<T, F> {
     return ok<T, F>(this.value);
   }
@@ -63,6 +71,14 @@ class Err<T, E> implements IErr<T, E> {
    * @param value 
    */
   public constructor(private readonly value: E) {}
+
+  and<U>(_: Result<U, E>): Result<U, E> {
+    return err(this.value);
+  }
+
+  andThen<U>(op: (val: T) => Result<U, E>): Result<U, E> {
+    return err(this.value);
+  }
 
   mapErr<F>(op: (val: E) => F): Result<T, F> {
     return err(op(this.value));

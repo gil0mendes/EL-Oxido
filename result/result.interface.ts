@@ -79,6 +79,22 @@ interface IResult<T, E> {
    * @param op 
    */
   mapErr<F>(op: (val: E) => F): Result<T, F>;
+
+  /**
+   * Returns res if the result is Ok, otherwise returns the Err value of self.
+   * 
+   * @param res 
+   */
+  and<U>(res: Result<U, E>): Result<U, E>;
+
+  /**
+   * Calls op if the result is Ok, otherwise returns the Err value of self.
+   * 
+   * This function can be used for control flow based on Result values.
+   * 
+   * @param op 
+   */
+  andThen<U>(op: (val: T) => Result<U, E>): Result<U, E>;
 }
 
 export interface Ok<T, E> extends IResult<T, E> {
