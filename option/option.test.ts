@@ -82,7 +82,7 @@ when("Option", ({ when, test }) => {
 
     const value = some(testValue);
     value.tap({
-      some(val) {
+      some(val: string) {
         controlBool = true;
         assertEquals(val, testValue);
       },
@@ -154,7 +154,7 @@ when("Option", ({ when, test }) => {
 
     const value = some(testValue);
     value.match({
-      some(val) {
+      some(val: string) {
         controlBool = true;
         assertEquals(val, testValue);
       },
@@ -188,7 +188,7 @@ when("Option", ({ when, test }) => {
     const testResult = 1000;
 
     const value = some(testValue);
-    const result = value.map((innerVal) => {
+    const result = value.map((innerVal: number) => {
       assertEquals(innerVal, testValue);
       return testResult;
     });
@@ -197,8 +197,8 @@ when("Option", ({ when, test }) => {
   });
 
   test("map do not executes with a None", () => {
-    const value = none();
-    const result = value.map((_) => {
+    const value = none<number>();
+    const result = value.map((_: number) => {
       fail("must not be executed on a None");
       return 40;
     });

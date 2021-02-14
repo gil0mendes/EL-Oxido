@@ -4,6 +4,14 @@ Base Monads for [Deno](https://deno.land).
 
 ---
 
+## Features
+
+This is a list of features currently implemented by this library:
+
+- Option type
+- Result type
+- Panic functions
+
 ## Usage
 
 ```typescript

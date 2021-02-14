@@ -1,7 +1,7 @@
 import { none, some } from "../option/option.ts";
 import { Option } from "../option/option.interface.ts";
 import { Err as IErr, Ok as IOk, Result } from "./result.interface.ts";
-import { panic } from "../executor.ts";
+import { panic } from "../executor/executor.ts";
 
 class Ok<T, E> implements IOk<T, E> {
   public readonly tag: "ok" = "ok";
