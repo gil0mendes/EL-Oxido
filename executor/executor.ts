@@ -1,3 +1,6 @@
+import { err, ok } from "../result/result.ts";
+import { Result } from "../result/result.interface.ts";
+
 /**
  * Panic with an error.
  *
@@ -7,4 +10,40 @@
 export function panic(error: string | Error): never {
   const errorObj = error instanceof Error ? error : Error(error);
   throw errorObj;
+}
+
+/**
+ * Contains an unsafe operation inside a secure container.
+ * 
+ * This always returns a Result type with the function return type and a string representation of the error.
+ * 
+ * @param f 
+ */
+export function unsafe<T>(f: () => T): Result<T, string> {
+  try {
+    const result = f();
+    return ok(result);
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : error;
+    return err(msg);
+  }
+}
+
+/**
+ * Contains an unsafe async operation inside a secure container.
+ * 
+ * This always returns a Result type with the function return type and a string representation of the error.
+ * 
+ * @param f 
+ */
+export async function unsafeAsync<T>(
+  f: () => Promise<T>,
+): Promise<Result<T, string>> {
+  try {
+    const result = await f();
+    return ok(result);
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : error;
+    return err(msg);
+  }
 }
