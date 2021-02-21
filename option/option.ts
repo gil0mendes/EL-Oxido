@@ -1,4 +1,4 @@
-import { panic } from "../executor/executor.ts";
+import { panic } from "../base/executor.ts";
 import {
   IOptionPattern,
   None as INone,

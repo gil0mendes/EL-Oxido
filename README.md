@@ -1,4 +1,4 @@
-# 🦕 EL-Monads
+# 🦕 EL-Oxido
 
 Base Monads for [Deno](https://deno.land).
 
