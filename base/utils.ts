@@ -1,10 +1,21 @@
 /**
+ * Set of utils that are really handy on day to day development as well as for us that we are developing this library.
+ */
+
+/**
+ * Unsafe data type for that cases that we really don't know what type will be.
+ * 
+ * Note: avoid using this as much as possible, this must only be used for base functions, not on production code.
+ */
+// deno-lint-ignore no-explicit-any
+export type UnsafeType = any;
+
+/**
  * Test if a value is primitive
  * 
  * @param v 
  */
-// deno-lint-ignore no-explicit-any
-export const isPrimitive = (v: any) => v !== Object(v);
+export const isPrimitive = (v: UnsafeType) => v !== Object(v);
 
 /**
  * Checks whether a value is null or undefined
@@ -12,40 +23,35 @@ export const isPrimitive = (v: any) => v !== Object(v);
  * 
  * @param v 
  */
-// deno-lint-ignore no-explicit-any
-export const isNil = (v: any) => v === undefined || v === null;
+export const isNil = (v: UnsafeType) => v === undefined || v === null;
 
 /**
  * Returns true when the value is not either null or undefined.
  * 
  * @param v 
  */
-// deno-lint-ignore no-explicit-any
-export const isDef = (v: any) => !isNil(v);
+export const isDef = (v: UnsafeType) => !isNil(v);
 
 /**
  * Determine type of an object.
  * 
  * @param v 
  */
-// deno-lint-ignore no-explicit-any
-export const type = (v: any) => isDef(v) ? v.constructor : v;
+export const type = (v: UnsafeType) => isDef(v) ? v.constructor : v;
 
 /**
  * Given a type, determine it's name.
  * 
  * @param v 
  */
-// deno-lint-ignore no-explicit-any
-export const typename = (v: any): string => isDef(v) ? v.name : `${v}`;
+export const typename = (v: UnsafeType): string => isDef(v) ? v.name : `${v}`;
 
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null` and has a `typeof` result of "object".
  * 
  * @param value 
  */
-// deno-lint-ignore no-explicit-any
-export const isObjectLike = (value: any) =>
+export const isObjectLike = (value: UnsafeType) =>
   isDef(value) && typeof value === "object";
 
 /**
@@ -54,8 +60,7 @@ export const isObjectLike = (value: any) =>
  * 
  * @param value 
  */
-// deno-lint-ignore no-explicit-any
-export const isPlainObject = (value: any) => {
+export const isPlainObject = (value: UnsafeType) => {
   if (!isObjectLike(value)) {
     return false;
   }

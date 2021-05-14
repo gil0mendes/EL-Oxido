@@ -8,16 +8,15 @@ import { Result } from "../result/result.interface.ts";
  * use a Result monad to return an error.
  */
 export function panic(error: string | Error): never {
-  const errorObj = error instanceof Error ? error : Error(error);
-  throw errorObj;
+  throw error instanceof Error ? error : Error(error);
 }
 
 /**
  * Contains an unsafe operation inside a secure container.
- * 
+ *
  * This always returns a Result type with the function return type and a string representation of the error.
- * 
- * @param f 
+ *
+ * @param f
  */
 export function unsafe<T>(f: () => T): Result<T, string> {
   try {
@@ -31,10 +30,10 @@ export function unsafe<T>(f: () => T): Result<T, string> {
 
 /**
  * Contains an unsafe async operation inside a secure container.
- * 
+ *
  * This always returns a Result type with the function return type and a string representation of the error.
- * 
- * @param f 
+ *
+ * @param f
  */
 export async function unsafeAsync<T>(
   f: () => Promise<T>,

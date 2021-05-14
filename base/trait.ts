@@ -4,27 +4,20 @@ import {
   emptyHybridWeakMap,
   HybridWeakMap,
 } from "../collections/hybrid_weak_map.ts";
-import { isDef, isObjectLike, type, typename } from "./utils.ts";
+import { isDef, isObjectLike, type, typename, UnsafeType } from "./utils.ts";
 import { Result } from "../result/result.interface.ts";
 import { err, ok } from "../result/result.ts";
 
 /**
- * Object that will implement the Trait.
- */
-// deno-lint-ignore no-explicit-any
-type ObjectType = any;
-
-/**
  * Implementing function type.
  */
-// deno-lint-ignore no-explicit-any
-type TraitImplFn<R> = (obj: ObjectType, ...args: Array<any>) => R;
+type TraitImplFn<R> = (obj: UnsafeType, ...args: Array<UnsafeType>) => R;
 
 /**
  * There is no trait implemented gor the given object.
  */
 class TraitNotImplemented<R> extends Error {
-  constructor(msg: string, public readonly trait: Trait<R>) {
+  constructor(_msg: string, public readonly trait: Trait<R>) {
     super();
   }
 }
@@ -52,16 +45,16 @@ export class Trait<R> {
     this.sym = sym.unwrapOrElse(() => Symbol(name));
   }
 
-  private lookupTypeTable(Type: ObjectType): Option<TraitImplFn<R>> {
+  private lookupTypeTable(Type: UnsafeType): Option<TraitImplFn<R>> {
     return this.table.get(Type);
   }
 
-  private lookupProperty(what: ObjectType): Option<TraitImplFn<R>> {
+  private lookupProperty(what: UnsafeType): Option<TraitImplFn<R>> {
     const prop = isDef(what) && what[this.sym];
     return prop ? some((w, ...args) => prop.apply(w, args)) : none();
   }
 
-  private lookupMethod(Type: ObjectType): Option<TraitImplFn<R>> {
+  private lookupMethod(Type: UnsafeType): Option<TraitImplFn<R>> {
     const method = isDef(Type) && Type.prototype[this.sym];
     return method ? some((w, ...args) => method.apply(w, args)) : none();
   }
@@ -71,7 +64,7 @@ export class Trait<R> {
    * 
    * @param what 
    */
-  lookupValue(what: ObjectType): Option<TraitImplFn<R>> {
+  lookupValue(what: UnsafeType): Option<TraitImplFn<R>> {
     const Type = type(what);
 
     const badType = Type === Object &&
@@ -89,9 +82,8 @@ export class Trait<R> {
    * @param what 
    */
   invoke(
-    what: ObjectType,
-    // deno-lint-ignore no-explicit-any
-    ...args: Array<any>
+    what: UnsafeType,
+    ...args: Array<UnsafeType>
   ): Result<R, TraitNotImplemented<R>> {
     const impl = this.lookupValue(what);
 
@@ -114,7 +106,7 @@ export class Trait<R> {
    * @param type 
    * @param impl 
    */
-  impl(type: ObjectType, impl: TraitImplFn<R>) {
+  impl(type: UnsafeType, impl: TraitImplFn<R>) {
     this.table.insert(type, impl);
   }
 }
