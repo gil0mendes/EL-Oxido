@@ -1,12 +1,12 @@
-import { none, some } from "../option/option.ts";
-import { Option } from "../option/option.interface.ts";
+import { none, some } from "../../option/option.ts";
+import { Option } from "../../option/option.interface.ts";
 import {
   emptyHybridWeakMap,
   HybridWeakMap,
-} from "../collections/hybrid_weak_map.ts";
-import { isDef, isObjectLike, type, typename, UnsafeType } from "./utils.ts";
-import { Result } from "../result/result.interface.ts";
-import { err, ok } from "../result/result.ts";
+} from "../../collections/hybrid_weak_map.ts";
+import { isDef, isObjectLike, type, typename, UnsafeType } from "../utils.ts";
+import { Result } from "../../result/result.interface.ts";
+import { err, ok } from "../../result/result.ts";
 
 /**
  * Implementing function type.
@@ -35,10 +35,10 @@ export class Trait<R> {
 
   /**
    * Create a new Trait instance.
-   * 
+   *
    * @param name Name of the Trait
-   * @param sym Symbol associated with the trait. This symbol is available under `MyTrait.sym` for developers to 
-   *  implement their interfaces with. This parameter is usually left empty; in this case a new symbol is created for 
+   * @param sym Symbol associated with the trait. This symbol is available under `MyTrait.sym` for developers to
+   *  implement their interfaces with. This parameter is usually left empty; in this case a new symbol is created for
    *  the Trait.
    */
   constructor(private readonly name: string, sym: Option<symbol>) {
@@ -61,8 +61,8 @@ export class Trait<R> {
 
   /**
    * Find the implementation of this trait for a specific value.
-   * 
-   * @param what 
+   *
+   * @param what
    */
   lookupValue(what: UnsafeType): Option<TraitImplFn<R>> {
     const Type = type(what);
@@ -78,8 +78,9 @@ export class Trait<R> {
 
   /**
    * Invoke the implementation.
-   * 
-   * @param what 
+   *
+   * @param what
+   * @param args
    */
   invoke(
     what: UnsafeType,
@@ -102,9 +103,9 @@ export class Trait<R> {
 
   /**
    * Implement this Trait for a class as a 'meth­od'.
-   * 
-   * @param type 
-   * @param impl 
+   *
+   * @param type
+   * @param impl
    */
   impl(type: UnsafeType, impl: TraitImplFn<R>) {
     this.table.insert(type, impl);
@@ -113,7 +114,7 @@ export class Trait<R> {
 
 /**
  * Define a new Trait.
- * 
+ *
  * @param name Name of the Trait
  */
 export function defineTrait<R>(name: string): Trait<R> {
@@ -122,11 +123,11 @@ export function defineTrait<R>(name: string): Trait<R> {
 
 /**
  * Define a new Trait with the given symbol.
- * 
+ *
  * @param name Name of the Trait
- * @param sym Symbol associated with the trait. This symbol is available under `MyTrait.sym` for developers to 
-   *  implement their interfaces with. This parameter is usually left empty; in this case a new symbol is created for 
-   *  the Trait.
+ * @param sym Symbol associated with the trait. This symbol is available under `MyTrait.sym` for developers to
+ *  implement their interfaces with. This parameter is usually left empty; in this case a new symbol is created for
+ *  the Trait.
  */
 export function defineTraitWithSymbol<R>(name: string, sym: symbol): Trait<R> {
   return new Trait(name, some(sym));

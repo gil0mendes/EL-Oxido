@@ -1,5 +1,5 @@
 import { assertFalse, assertTrue, when } from "../../test.utils.ts";
-import { eq, uneq } from "./equals.trait.ts";
+import { eq, uneq } from "./mod.ts";
 
 when("equals trait", ({ when, test }) => {
   when("eq", ({ test }) => {

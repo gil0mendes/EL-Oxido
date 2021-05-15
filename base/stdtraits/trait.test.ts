@@ -1,4 +1,4 @@
-import { assertTrue, when } from "../test.utils.ts";
+import { assertTrue, when } from "../../test.utils.ts";
 import { defineTrait, defineTraitWithSymbol } from "./trait.ts";
 
 when("trait", ({ test }) => {

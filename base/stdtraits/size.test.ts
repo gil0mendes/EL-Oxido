@@ -1,3 +1,4 @@
+import { empty, size } from "./mod.ts";
 import {
   assertEquals,
   assertFalse,
@@ -5,7 +6,6 @@ import {
   test,
   when,
 } from "../../test.utils.ts";
-import { empty, size } from "./size.trait.ts";
 
 when("Size trait", ({ test }) => {
   test("size", () => {

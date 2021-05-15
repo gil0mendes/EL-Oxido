@@ -1,3 +1,4 @@
+import { Size } from "../base/stdtraits/size.trait.ts";
 import { Option } from "../option/option.interface.ts";
 import { none, some } from "../option/option.ts";
 import { createIterator, Iter, KeyedIter } from "./collections.ts";
@@ -33,36 +34,36 @@ export interface HashMap<K, V> {
 
   /**
    * Inserts a key-value pair into the map.
-   * 
+   *
    * If the map did not have this key present, None is returned.
-   * 
+   *
    * If the map did have this key present, the value is updated, and the old value is returned.
    */
   insert(key: K, value: V): Option<V>;
 
   /**
    * Returns true if the map contains a value for the specified key.
-   * 
-   * @param key 
+   *
+   * @param key
    */
   containsKey(key: K): boolean;
 
   /**
    * Returns the value corresponding to the key.
-   * 
-   * @param key 
+   *
+   * @param key
    */
   get(key: K): Option<V>;
 
   /**
    * Removes a key from the map, returning the value at the key if the key was previously in the map.
-   * 
-   * @param key 
+   *
+   * @param key
    */
   remove(key: K): Option<V>;
 }
 
-class HashMapImpl<K, V> implements HashMap<K, V> {
+export class HashMapImpl<K, V> implements HashMap<K, V> {
   /**
    * Internal map here we hold the values.
    */
@@ -120,8 +121,8 @@ export function emptyHashMap<K, V>(): HashMap<K, V> {
 
 /**
  * Create a new HashMap with the data given by the iterator.
- * 
- * @param iter 
+ *
+ * @param iter
  */
 export function HashMapFromIterator<K, V>(
   iter: KeyedIter<K, V>,

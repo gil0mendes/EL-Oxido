@@ -1,7 +1,5 @@
-import { defineTrait } from "../trait.ts";
-import { type, UnsafeType } from "../utils.ts";
-import { toStr } from "./to-str.trait.ts";
-import { size } from "./size.trait.ts";
+import { defineTrait, size, toStr } from "./mod.ts";
+import { type } from "../utils.ts";
 
 /**
  * Trait to check whether two values are equal.
